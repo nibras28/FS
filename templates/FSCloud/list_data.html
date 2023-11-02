@@ -1,0 +1,88 @@
+{% load static %}
+{% load tz %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSCloud - List of Data</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'FSCloud/fetherstill-logo.png' %}" alt="FSCloud Logo">
+        </div>
+    </header>
+    <main>
+        <h1>List of Data in AWS S3</h1>
+        <div class="search-box">
+            <input type="text" id="search-box" placeholder="Search by Name" onkeyup="searchData()">
+        </div>
+        <div class="search-filters">
+            <div class="date-filter">
+                <label for="from-date">From Date:</label>
+                <input type="date" id="from-date" onchange="searchData()">
+                <label for="to-date">To Date:</label>
+                <input type="date" id="to-date" onchange="searchData()">
+            </div>
+            <div class="size-filter">
+                <label for="min-size">Min Size (bytes):</label>
+                <input type="text" id="min-size" onkeyup="searchData()">
+                <label for="max-size">Max Size (bytes):</label>
+                <input type="text" id="max-size" onkeyup="searchData()">
+            </div>
+            <button id="search-button" onclick="searchData()">Search</button>
+        </div>
+        <table id="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Format</th>
+                    <th>Date Modified</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in file_list %}
+                <tr>
+                    <td><a href="{% url 'view_csv' file.name %}">{{ file.name }}</a></td>
+                    <td>{{ file.size }} bytes</td>
+                    <td>{{ file.format }}</td>
+                    <td>{{ file.date_modified }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+
+    <script>
+        function searchData() {
+    const searchBox = document.getElementById('search-box');
+    const fromDate = new Date(document.getElementById('from-date').value).getTime();
+    const toDate = new Date(document.getElementById('to-date').value).getTime();
+    const minSize = parseInt(document.getElementById('min-size').value) || 0;
+    const maxSize = parseInt(document.getElementById('max-size').value) || Infinity;
+    const table = document.getElementById('data-table');
+    const rows = table.getElementsByTagName('tr');
+
+    for (let i = 1; i < rows.length; i++) {
+        const name = rows[i].getElementsByTagName('td')[0].textContent.toLowerCase();
+        const size = parseInt(rows[i].getElementsByTagName('td')[1].textContent);
+        const dateModified = new Date(rows[i].getElementsByTagName('td')[3].textContent).getTime();
+
+        const nameFilter = name.includes(searchBox.value.toLowerCase());
+        const dateFilter = (!fromDate || fromDate <= dateModified) && (!toDate || dateModified <= toDate);
+        const sizeFilter = minSize <= size && size <= maxSize;
+
+        if (nameFilter && dateFilter && sizeFilter) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
+        }
+    }
+}
+
+    </script>
+</body>
+</html>

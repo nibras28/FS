@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Data</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/viewcsv.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'FSCloud/fetherstill-logo.png' %}" alt="FSCloud Logo">
+        </div>
+    </header>
+    <main>
+        <h1>View CSV Data - {{ file_name }}</h1>
+        <a href="https://s3.console.aws.amazon.com/s3/object/fetherstillsample?region=ca-central-1&prefix={{ file_name }}" target="_blank">View Data in AWS</a>
+        <table>
+            <thead>
+                <tr>
+                    <!-- Add header row here based on your CSV content -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in csv_data %}
+                <tr>
+                     {% for cell in row %}
+                     <td>{{ cell }}</td>
+                     {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
+`

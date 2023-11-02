@@ -1,0 +1,96 @@
+/* Reset default margin and padding */
+body, h1, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set background color and font family */
+body {
+    background: linear-gradient(to bottom, #00b4d8, #0096c7); /* Gradient background in blue tones */
+    font-family: "Arial", sans-serif;
+    color: #333; /* Dark gray text color */
+}
+
+/* Center-align the content */
+main {
+    max-width: 800px; /* Wider content area for readability */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4; /* Light gray content background */
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Slight box shadow for depth */
+    border-radius: 15px;
+}
+
+/* Style header */
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    max-width: 150px; /* Increase logo size */
+    height: auto;
+}
+
+/* Style headings */
+h1 {
+    text-align: center;
+    color: #333; /* Dark gray text color */
+    font-size: 36px; /* Larger font size for the main heading */
+    margin-bottom: 20px;
+}
+
+/* Style form elements */
+.file-upload, .filter-options, .search {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px; /* Increased spacing for labels */
+    color: #555; /* Slightly darker gray text color */
+    font-weight: bold;
+}
+
+input[type="file"],
+select,
+input[type="text"] {
+    width: 90%;
+    padding: 15px; /* Increased padding for better input field spacing */
+    margin-bottom: 20px; /* Increased spacing between input fields */
+    border: 1px solid #00b4d8; /* Light blue border */
+    border-radius: 10px;
+    background-color: #f0f0f0; /* Light gray background */
+    color: #333; /* Dark gray text color */
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+input[type="file"]:hover,
+select:hover,
+input[type="text"]:hover {
+    border-color: #0096c7; /* Light blue border on hover */
+}
+
+button {
+    background: linear-gradient(to bottom, #0096c7, #0077a2); /* Gradient button background in blue tones */
+    color: #FFFFFF; /* White button text color */
+    padding: 15px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s; /* Smooth hover effect with scaling */
+}
+
+button:hover {
+    background: linear-gradient(to bottom, #0077a2, #00597d); /* Gradient change on hover */
+    transform: scale(1.03); /* Slight scale-up effect */
+}
+
+/* Style filtered results container */
+#filtered-results {
+    background-color: #f0f0f0; /* Light gray background for results container */
+    padding: 20px;
+    border: 1px solid #00b4d8; /* Light blue border */
+    border-radius: 15px;
+}

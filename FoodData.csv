@@ -1,0 +1,185 @@
+Food,Allergy
+almond,Nut Allergy
+apple,Oral Allergy Syndrome
+apricot,Stone Fruit Allergy
+artichoke,Insulin Allergy
+asparagus,Allium Allergy
+avocado,Oral Allergy Syndrome
+bamboo shoot,Histamine Allergy
+banana,Banana Allergy
+barley,Gluten Allergy
+bean,Legume Allergy
+blackberry,Salicylate Allergy
+black-eyed bean,Legume Allergy
+blueberry,Salicylate Allergy
+bonito,Histamine Allergy
+broad bean,Legume Allergy
+broccoli,Broccoli allergy
+brussels sprouts,Cruciferous Allergy
+buckwheat,Gluten Allergy
+burdock,Ragweed Allergy
+butter,Milk allergy / Lactose intolerance
+butter bean,Legume Allergy
+buttermilk,Milk allergy / Lactose intolerance
+button mushroom,Mushroom Allergy
+cabbage,Cruciferous Allergy
+cacao bean,
+canola oil,
+carrot,Hypersensitivity
+casein,Milk allergy / Lactose intolerance
+cattle,Alpha-gal Syndrome
+cauliflower,Cruciferous Allergy
+celery,Hypersensitivity
+cheese,Milk allergy / Lactose intolerance
+cherry,Stone Fruit Allergy
+chestnut,Nut Allergy
+chicken,Poultry Allergy
+chicory,Insulin Allergy
+chinese cabbage,Cruciferous Allergy
+coconut oil,
+coffee bean,Ochratoxin Allergy
+corn,Corn Allergy
+corn oil,
+cotton seed,Seed Allergy
+cranberry,Salicylate Allergy
+cream,Milk allergy / Lactose intolerance
+crustaceans,Shellfish Allergy
+cucumber ,
+custard,Milk allergy / Lactose intolerance
+date,Oral Allergy Syndrome
+deer,Alpha-gal Syndrome
+duck,Poultry Allergy
+eel,Fish Allergy
+egg plant,Nightshade Allergy
+eggs,Poultry Allergy
+endive,Insulin Allergy
+fructose,Sugar Allergy / Intolerance
+garlic,Allium Allergy
+ghrkin,
+ginger,Histamine Allergy
+ginkgo nut,Nut Allergy
+globfish,Fish Allergy
+glucose,Sugar Allergy / Intolerance
+goat,Alpha-gal Syndrome
+grape,LTP Allergy
+grapefruit,Citrus Allergy
+grapeseed oil,
+green soybean,Legume Allergy
+groundnut oil,
+guava,Oral Allergy Syndrome
+honey,Honey Allergy
+hop,Beer Allergy
+horse,Alpha-gal Syndrome
+horse mackerel,Fish Allergy
+horseradish,Cruciferous Allergy
+huckleberry,Salicylate Allergy
+ice cream,Milk allergy / Lactose intolerance
+japanese pear,Oral Allergy Syndrome
+japanese persimmon,
+japanese plum,Stone Fruit Allergy
+kale,Cruciferous Allergy
+kidney bean,Legume Allergy
+kiwi,Oral Allergy Syndrome
+konjac,Potato Allergy
+kyona,Cruciferous Allergy
+lactose,Lactose Intolerance
+leek,Allium Allergy
+lemon,Citrus Allergy
+lentil,Legume Allergy
+lettuce ,LTP Allergy
+lima bean,Legume Allergy
+lime,Citrus Allergy
+loquat,Oral Allergy Syndrome
+mackerel,Fish Allergy
+makuwauri  melon,
+mango,Oral Allergy Syndrome
+melons,
+milk,Milk allergy / Lactose intolerance
+mineral water,Aquagenic Urticaria
+mitsuba,Hypersensitivity
+mume plum,Stone Fruit Allergy
+mustard oil,
+mustard spinach,Cruciferous Allergy
+nectarine,Stone Fruit Allergy
+nira,Allium Allergy
+okra,Histamine Allergy
+olive oil,
+onion,Allium Allergy
+orange,Citrus Allergy
+orange pulp,Citrus Allergy
+papaya,Oral Allergy Syndrome
+parsley,Hypersensitivity
+parsnip,Hypersensitivity
+passion fruit,Oral Allergy Syndrome
+peach,Stone Fruit Allergy
+peanut,Peanut Allergy
+pear,Oral Allergy Syndrome
+peas,Legume Allergy
+peas,Legume Allergy
+pecan,Nut Allergy
+pegia,Legume Allergy
+peppermint,Mint Allergy
+percifomes,Fish Allergy
+pig,Alpha-gal Syndrome
+pineapple,Oral Allergy Syndrome
+popcorn,Corn Allergy
+potato,Potato Allergy
+prune,Stone Fruit Allergy
+pumpkin,
+qing-geng-cai,Cruciferous Allergy
+quince,Oral Allergy Syndrome
+radish leaf,
+radish root,Hypersensitivity
+rapeseed,Seed Allergy
+raspberry,Salicylate Allergy
+rice,Rice Allergy
+ricebran oil,
+royal jelly,Honey Allergy
+rye,Gluten Allergy
+safflower seed,Seed Allergy
+salmon,Fish Allergy
+salsify,Insulin Allergy
+sansho,Pepper Allergy
+sea bass,Fish Allergy
+sea bream,Fish Allergy
+sesame seed,Seed Allergy
+shallot,Allium Allergy
+sheep,Alpha-gal Syndrome
+shelled mollusc,Fish Allergy
+shiitake  mushroom,Mushroom Allergy
+shungiku,Insulin Allergy
+sour cream,Milk allergy / Lactose intolerance
+soybean,Soy Allergy
+spearmint,Mint Allergy
+spinach,Histamine Allergy
+squash,
+strawberry,Salicylate Allergy
+sugar,Sugar Allergy / Intolerance
+sugar beet,Sugar Allergy / Intolerance
+sugarcane,Sugar Allergy / Intolerance
+sultani,Legume Allergy
+sultapya,Legume Allergy
+sunflower oil,
+sunflower seed,Seed Allergy
+sweet corn,Corn Allergy
+sweet pepper,Nightshade Allergy
+sweet potato,Potato Allergy
+taro,Potato Allergy
+tea,Tannin Allergy
+tetraodontiformes,Fish Allergy
+tomato,Nightshade Allergy
+trout,Fish Allergy
+tuna,Fish Allergy
+turkey,Poultry Allergy
+turnip leaf,
+turnip root,Thyroid
+vegetable oil,
+walnut,Nut Allergy
+water melon,
+watercress,
+welsh,Allium Allergy
+wheat,Gluten Allergy
+whey,Milk allergy / Lactose intolerance
+white bean,Legume Allergy
+yam,Potato Allergy
+yogurt ,Milk allergy / Lactose intolerance

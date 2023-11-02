@@ -1,0 +1,22 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unauthenticated Access</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{% static 'FSCloud/fetherstill-logo.png' %}" alt="FSCloud Logo">
+        </div>
+    </header>
+    <h1>Unauthenticated Access</h1>
+    <p>You need to log in to access this page.</p>
+    <p><a href="{% url 'login' %}">Login</a></p>
+    <p><a href="{% url 'home' %}">Register</a></p>
+</body>
+</html>
