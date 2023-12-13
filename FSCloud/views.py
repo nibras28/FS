@@ -1,20 +1,13 @@
-import csv
-import io
-
-from django.core.files.base import ContentFile
-from django.core.files.storage import default_storage
-from django.http import FileResponse, HttpResponse
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
-from django.contrib.auth.forms import AuthenticationForm  # Remove this import
-from .forms import RegistrationForm
-from .forms import CustomAuthenticationForm
 from django.contrib import messages
-import boto3
-from botocore.exceptions import NoCredentialsError
-from django.shortcuts import render
-from .forms import RegistrationForm, CustomAuthenticationForm
+from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from reportlab.lib.units import inch
+from rest_framework.decorators import api_view
+
+from .forms import RegistrationForm, CustomAuthenticationForm
 
 
 def home_view(request):
@@ -29,13 +22,14 @@ def home_view(request):
             user.save()
             # Log in the user
             login(request, user)
-            return redirect('login')  # Redirect to the index page after registration
+            return redirect('index')  # Redirect to the index page after registration
     else:
         form = RegistrationForm()
-    return render(request, 'FSCloud/register.html', {'form': form})
+    return render(request, 'FSCloud/LR.html', {'form': form})
 
 
 def login_view(request):
+
     error_message = None
 
     if request.method == 'POST':
@@ -60,41 +54,37 @@ def login_view(request):
     else:
         form = CustomAuthenticationForm()
 
-    return render(request, 'FSCloud/login.html', {'form': form, 'error_message': error_message})
+    return render(request, 'FSCloud/LR.html', {'form': form, 'error_message': error_message})
 
 
 @login_required
 def index_view(request):
-    uploaded_data = None
+    if request.user.is_authenticated:
+        uploaded_data = None
 
-    if request.method == 'POST':
-        uploaded_file = request.FILES.get('file')
-        if uploaded_file:
-            file_name = uploaded_file.name
-            try:
-                # Configure AWS S3 client
-                s3 = boto3.client('s3', aws_access_key_id='AKIA4XKGL5GZY2YSA5ON',
-                                  aws_secret_access_key='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')
+        if request.method == 'POST':
+            uploaded_file = request.FILES.get('file')
+            if uploaded_file:
+                file_name = uploaded_file.name
+                try:
+                    # Configure AWS S3 client
+                    s3 = boto3.client('s3', aws_access_key_id='AKIA4XKGL5GZY2YSA5ON',
+                                      aws_secret_access_key='If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR')
 
-                # Upload the file to your AWS S3 bucket
-                s3.upload_fileobj(uploaded_file, 'fetherstillsample', file_name)
+                    s3.upload_fileobj(uploaded_file, 'fetherstillsample', file_name)
+                    uploaded_data = f"File '{file_name}' uploaded successfully."
+                except NoCredentialsError:
+                    uploaded_data = "AWS credentials are not configured."
 
-                uploaded_data = f"File '{file_name}' uploaded successfully."
-            except NoCredentialsError:
-                uploaded_data = "AWS credentials are not configured."
-
-    return render(request, 'FSCloud/index.html', {'uploaded_data': uploaded_data})
-
-
-from datetime import datetime
+        return render(request, 'FSCloud/index.html', {'uploaded_data': uploaded_data})
+    else:
+        return redirect('login')
 
 
-from datetime import datetime
 import csv
-from django.http import HttpResponse
-import tablib
-import pandas as pd
 
+
+@login_required
 def list_data(request):
     # Initialize AWS S3 client
     s3 = boto3.client('s3', aws_access_key_id='AKIA4XKGL5GZY2YSA5ON',
@@ -127,7 +117,7 @@ def list_data(request):
     return render(request, 'FSCloud/list_data.html', {'file_list': file_list})
 
 
-
+@login_required
 def view_csv(request, file_name):
     # Initialize AWS S3 client
     s3 = boto3.client('s3', aws_access_key_id='AKIA4XKGL5GZY2YSA5ON',
@@ -148,3 +138,227 @@ def view_csv(request, file_name):
 
     # Pass the CSV data to the template
     return render(request, 'FSCloud/view_csv.html', {'file_name': file_name, 'csv_data': csv_data})
+
+
+from django.http import JsonResponse
+
+
+@api_view(['POST'])
+@csrf_exempt
+def api_upload_file(request):
+    if request.method == 'POST':
+        uploaded_file = request.FILES.get('file')
+
+        if uploaded_file:
+            file_name = uploaded_file.name
+            try:
+                # Configure AWS S3 client
+                s3 = boto3.client('s3', aws_access_key_id='AKIA4XKGL5GZY2YSA5ON',
+                                  aws_secret_access_key='If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR')
+
+                # Specify your AWS S3 bucket name
+                bucket_name = 'fetherstillsample'
+
+                # Upload the file to S3
+                s3.upload_fileobj(uploaded_file, bucket_name, file_name)
+
+                return JsonResponse({'status': 'success', 'message': f"File '{file_name}' uploaded successfully."})
+            except NoCredentialsError:
+                return JsonResponse({'status': 'error', 'message': "AWS credentials are not configured."})
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request method or file not provided.'})
+
+
+def download_csv(request, file_name):
+    # Replace with your own AWS credentials
+    aws_access_key_id = 'AKIA4XKGL5GZY2YSA5ON'
+    aws_secret_access_key = 'If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR'
+    bucket_name = 'fetherstillsample'
+
+    # Initialize AWS S3 client
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+    try:
+        # Retrieve the file from S3
+        response = s3.get_object(Bucket=bucket_name, Key=file_name)
+
+        # Prepare the file for download
+        content = response['Body'].read()
+        response = HttpResponse(content, content_type='application/csv')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+
+        return response
+    except NoCredentialsError:
+        return HttpResponse("AWS credentials are not configured.")
+
+
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+from reportlab.lib.pagesizes import letter
+from reportlab.lib import colors
+
+
+# ... your other imports ...
+
+def download_pdf(request, file_name):
+    # Replace with your own AWS credentials
+    aws_access_key_id = 'AKIA4XKGL5GZY2YSA5ON'
+    aws_secret_access_key = 'If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR'
+    bucket_name = 'fetherstillsample'
+
+    try:
+        # Initialize AWS S3 client
+        s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+        # Retrieve the file from S3
+        response = s3.get_object(Bucket=bucket_name, Key=file_name)
+
+        # Load the CSV content
+        content = response['Body'].read().decode('utf-8')
+
+        # Split the content into lines
+        lines = content.split('\n')
+
+        # Create a PDF document
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.pdf'
+        doc = SimpleDocTemplate(response, pagesize=letter)
+
+        # Create a table to display the CSV data
+        data = [line.split(',') for line in lines]
+        table = Table(data, colWidths=[1.5 * inch for _ in range(len(data[0]))])
+
+        # Add style to the table
+        style = TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
+            ('GRID', (0, 0), (-1, -1), 1, colors.black)
+        ])
+        table.setStyle(style)
+
+        # Build the PDF document
+        elements = []
+        elements.append(table)
+        doc.build(elements)
+
+        return response
+    except NoCredentialsError:
+        return HttpResponse("AWS credentials are not configured.")
+
+
+import boto3
+from openpyxl import Workbook
+from openpyxl.writer.excel import ExcelWriter
+
+
+def download_excel(request, file_name):
+    # Replace with your own AWS credentials
+    aws_access_key_id = 'AKIA4XKGL5GZY2YSA5ON'
+    aws_secret_access_key = 'If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR'
+    bucket_name = 'fetherstillsample'
+
+    # Initialize AWS S3 client
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+    try:
+        # Retrieve the file from S3
+        response = s3.get_object(Bucket=bucket_name, Key=file_name)
+
+        # Prepare the file for download
+        content = response['Body'].read()
+
+        # Create an in-memory Excel workbook
+        workbook = Workbook()
+
+        # You can populate the workbook with data here if needed
+
+        # Create a response with the Excel workbook
+        response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+        response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
+
+        # Save the workbook to the response
+        ExcelWriter(workbook, response)
+
+        return response
+    except NoCredentialsError:
+        return HttpResponse("AWS credentials are not configured.")
+
+
+from docx import Document
+from django.http import HttpResponse
+from botocore.exceptions import NoCredentialsError
+
+
+def download_word(request, file_name):
+    # Replace with your own AWS credentials
+    aws_access_key_id = 'AKIA4XKGL5GZY2YSA5ON'
+    aws_secret_access_key = 'If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR'
+    bucket_name = 'fetherstillsample'
+
+    # Initialize AWS S3 client
+    s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+
+    try:
+        # Retrieve the file from S3
+        response = s3.get_object(Bucket=bucket_name, Key=file_name)
+
+        # Prepare the Word document for download
+        content = response['Body'].read().decode('utf-8')
+        docx_response = HttpResponse(content_type='application/msword')
+        docx_response['Content-Disposition'] = f'attachment; filename="{file_name.replace(".csv", ".docx")}"'
+
+        # Create a Word document
+        doc = Document()
+        doc.add_paragraph(content)
+
+        doc.save(docx_response)
+
+        return docx_response
+
+    except NoCredentialsError:
+        return HttpResponse("AWS credentials are not configured.")
+
+# import boto3
+# from botocore.exceptions import NoCredentialsError
+# from django.http import HttpResponse
+# from openpyxl import Workbook
+# from openpyxl.writer.excel import save_virtual_workbook
+#
+#
+# # ... your other views ...
+#
+# def download_excel2(request, file_name):
+#     # Replace with your own AWS credentials
+#     aws_access_key_id = 'AKIA4XKGL5GZY2YSA5ON'
+#     aws_secret_access_key = 'If8eEm2Pgm+ir/YsFHwN7CpQ/VlKwuW2CQAUfIQR'
+#     bucket_name = 'fetherstillsample'
+#
+#     # Initialize AWS S3 client
+#     s3 = boto3.client('s3', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key)
+#
+#     try:
+#         # Retrieve the file from S3
+#         response = s3.get_object(Bucket=bucket_name, Key=file_name)
+#
+#         # Create an XLSX file from the retrieved content
+#         content = response['Body'].read()
+#         workbook = Workbook()
+#         worksheet = workbook.active
+#
+#         # Write the content to the worksheet
+#         for row in content.splitlines():
+#             row_values = row.decode('utf-8').split(',')
+#             worksheet.append(row_values)
+#
+#         # Prepare the XLSX file for download
+#         xlsx_file = save_virtual_workbook(workbook)
+#         response = HttpResponse(xlsx_file,
+#                                 content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+#         response['Content-Disposition'] = f'attachment; filename="{file_name}.xlsx"'
+#
+#         return response
+#     except NoCredentialsError:
+#         return HttpResponse("AWS credentials are not configured.")

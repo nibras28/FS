@@ -7,6 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>View Data</title>
     <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/viewcsv.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js"></script>
 </head>
 <body>
     <header>
@@ -17,23 +20,50 @@
     <main>
         <h1>View CSV Data - {{ file_name }}</h1>
         <a href="https://s3.console.aws.amazon.com/s3/object/fetherstillsample?region=ca-central-1&prefix={{ file_name }}" target="_blank">View Data in AWS</a>
-        <table>
+
+        <!-- Add a "Download CSV" button -->
+        <a href="{% url 'download_csv' file_name %}" class="btn">Download CSV</a>
+        <!--<a href="{% url 'download_pdf' file_name %}" class="btn">Download PDF</a> -->
+        <a href="{% url 'download_excel' file_name %}" class="btn">Download Excel</a>
+        <a href="{% url 'download_word' file_name %}" class="btn">Download Word</a>
+
+        <table id="csvTable">
             <thead>
                 <tr>
-                    <!-- Add header row here based on your CSV content -->
+                    {% for cell in csv_data.0 %}
+                        <th>{{ cell }}</th>
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody>
                 {% for row in csv_data %}
-                <tr>
-                     {% for cell in row %}
-                     <td>{{ cell }}</td>
-                     {% endfor %}
-                </tr>
+                    {% if forloop.counter > 1 %}  {# Skip the first row #}
+                        <tr>
+                            {% for cell in row %}
+                                <td>{% if cell is None %}{% if forloop.parentloop.counter0 in integer_columns %}0{% else %}NA{% endif %}{% else %}{{ cell }}{% endif %}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
+
+        <script>
+            if (window.jQuery) {
+                // jQuery is loaded
+                $(document).ready(function() {
+                    $('#csvTable').DataTable({
+                        paging: true,
+                        searching: true,
+                        ordering: true,
+                        // Add more options as needed
+                    });
+                });
+            } else {
+                // jQuery is not loaded
+                console.error('jQuery is not loaded.');
+            }
+        </script>
     </main>
 </body>
 </html>
-`

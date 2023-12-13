@@ -12,14 +12,7 @@ body {
 }
 
 /* Center-align the content */
-main {
-    max-width: 800px; /* Wider content area for readability */
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff; /* White content background */
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Slight box shadow for depth */
-    border-radius: 15px;
-}
+
 
 /* Style header */
 header {
