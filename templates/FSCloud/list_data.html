@@ -6,7 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FSCloud - List of Data</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'FSCloud/styles2.css' %}">
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("http://127.0.0.1:8000/static/FSCloud/giphy.gif");
+            background-size: cover;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -15,6 +24,7 @@
         </div>
     </header>
     <main>
+        <a href="{% url 'index' %}" class="back-button">Back</a>
         <h1>List of Data in AWS S3</h1>
         <div class="search-box">
             <input type="text" id="search-box" placeholder="Search by Name" onkeyup="searchData()">
@@ -32,8 +42,8 @@
                 <label for="max-size">Max Size (bytes):</label>
                 <input type="text" id="max-size" onkeyup="searchData()">
             </div>
-            <button id="search-button" onclick="searchData()">Search</button>
         </div>
+
         <table id="data-table">
             <thead>
                 <tr>
